@@ -4,9 +4,12 @@ import { expressMiddleware } from '@apollo/server/express4';
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import connectDB from './mongoose/db';
+import cors from 'cors';
 
 const startServer = async () => {
   const app: Application = express();
+
+  app.use(cors());
 
   // Create a new ApolloServer instance
   const server = new ApolloServer({
