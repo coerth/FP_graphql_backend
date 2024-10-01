@@ -3,8 +3,9 @@ import Set from '../mongoose/models/Set';
 
 const resolvers = {
   Query: {
-    cards: async (_: any, { limit = 50, skip = 0 }: { limit?: number; skip?: number }) => {
-      return await Card.find().limit(limit).skip(skip);
+    cards: async (_: any, { limit = 50, skip = 0, lang }: { limit?: number; skip?: number; lang?: string }) => {
+      const query = lang ? { lang } : {};
+      return await Card.find(query).limit(limit).skip(skip);
     },
     card: async (_: any, { id }: { id: string }) => {
       return await Card.findById(id);

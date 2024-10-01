@@ -122,7 +122,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    cards(limit: Int, skip: Int): [Card]
+    cards(limit: Int, skip: Int, lang: String): [Card]
     card(id: String!): Card
     sets(limit: Int, skip: Int): [Set]
     set(id: ID!): Set
