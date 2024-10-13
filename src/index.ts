@@ -5,11 +5,14 @@ import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import connectDB from './mongoose/db';
 import cors from 'cors';
+import conditionalAuth from './middleware/conditionalAuth';
 
 const startServer = async () => {
   const app: Application = express();
 
   app.use(cors());
+
+  app.use(conditionalAuth);
 
   // Create a new ApolloServer instance
   const server = new ApolloServer({
@@ -23,8 +26,10 @@ const startServer = async () => {
   // Middleware for Express and Apollo Server
   app.use(
     '/graphql',
-    express.json(), // Required to parse JSON bodies
-    expressMiddleware(server)
+    express.json(),
+    expressMiddleware(server, {
+      context: ({ req }) => ({ req }),
+    })
   );
 
   // Connect to MongoDB

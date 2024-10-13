@@ -1,5 +1,6 @@
 import Card from '../mongoose/models/Card';
 import Set from '../mongoose/models/Set';
+import User from '../mongoose/models/User';
 
 const resolvers = {
   Query: {
@@ -15,6 +16,25 @@ const resolvers = {
     },
     set: async (_: any, { id }: { id: string }) => {
       return await Set.findById(id);
+    },
+    user: async (_: any, { email }: { email: string }) => {
+      return await User.findOne({ email });
+    },
+  },
+  Mutation: {
+    createUser: async (_: any, { googleId, email, name }: { googleId: string; email: string; name: string }) => {
+      let user = await User.findOne({ email });
+      if (!user) {
+        user = new User({
+          googleId,
+          email,
+          name,
+          nickname: name, // Assuming nickname is the same as name initially
+          timestamp: new Date().toISOString(), // Set timestamp to current date and time
+        });
+        await user.save();
+      }
+      return user;
     },
   },
 };

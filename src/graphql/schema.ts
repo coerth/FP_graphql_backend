@@ -121,11 +121,25 @@ const typeDefs = gql`
     set_search_uri: String!
   }
 
+  type User {
+    id: ID!
+    googleId: String!
+    email: String!
+    name: String!
+    nickname: String!
+    timestamp: String!
+  }
+
   type Query {
     cards(limit: Int, skip: Int, lang: String): [Card]
     card(id: String!): Card
     sets(limit: Int, skip: Int): [Set]
     set(id: ID!): Set
+    user(email: String!): User
+  }
+
+  type Mutation {
+    createUser(googleId: String!, email: String!, name: String!): User
   }
 `;
 
