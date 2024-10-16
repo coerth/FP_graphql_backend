@@ -28,7 +28,6 @@ const conditionalAuth = (req: Request, res: Response, next: NextFunction) => {
       next();
     });
   } else {
-    console.log("No Authorization header found, skipping JWT check middleware");
     // If no Authorization header, skip the JWT check middleware
     next();
   }

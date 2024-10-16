@@ -17,16 +17,16 @@ const resolvers = {
     set: async (_: any, { id }: { id: string }) => {
       return await Set.findById(id);
     },
-    user: async (_: any, { email }: { email: string }) => {
-      return await User.findOne({ email });
+    user: async (_: any, { sub }: { sub: string }) => {
+      return await User.findOne({ sub });
     },
   },
   Mutation: {
-    createUser: async (_: any, { googleId, email, name }: { googleId: string; email: string; name: string }) => {
+    createUser: async (_: any, { sub, email, name }: { sub: string; email: string; name: string }) => {
       let user = await User.findOne({ email });
       if (!user) {
         user = new User({
-          googleId,
+          sub,
           email,
           name,
           nickname: name, // Assuming nickname is the same as name initially

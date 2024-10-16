@@ -123,11 +123,24 @@ const typeDefs = gql`
 
   type User {
     id: ID!
-    googleId: String!
+    sub: String!
     email: String!
     name: String!
     nickname: String!
     timestamp: String!
+  }
+
+  type DeckCard {
+    card: Card!
+    count: Int!
+  }
+
+  type Deck {
+    id: ID!
+    user: User!
+    name: String!
+    legality: String!
+    cards: [DeckCard!]!
   }
 
   type Query {
@@ -139,7 +152,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(googleId: String!, email: String!, name: String!): User
+    createUser(sub: String!, email: String!, name: String!): User
   }
 `;
 
