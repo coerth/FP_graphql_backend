@@ -82,7 +82,7 @@ export interface ICard extends Document {
   };
 }
 
-const CardSchema: Schema = new Schema({
+export const CardSchema: Schema = new Schema({
   object: { type: String, required: true },
   id: { type: String, required: true, unique: true },
   oracle_id: { type: String, required: true },

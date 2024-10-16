@@ -149,10 +149,21 @@ const typeDefs = gql`
     sets(limit: Int, skip: Int): [Set]
     set(id: ID!): Set
     user(email: String!): User
+    decks(limit: Int, skip: Int): [Deck]
+    decksByUser: [Deck]
+    deck(id: ID!): Deck
   }
 
   type Mutation {
     createUser(sub: String!, email: String!, name: String!): User
+    createDeck(name: String!, legality: String!, cards: [DeckCardInput!]): Deck
+    addCardToDeck(deckId: ID!, cardId: String!, count: Int!): Deck
+    removeCardFromDeck(deckId: ID!, cardId: String!): Deck
+  }
+
+  input DeckCardInput {
+    cardId: String!
+    count: Int!
   }
 `;
 

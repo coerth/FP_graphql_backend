@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 interface IUser extends Document {
-  googleId: string;
+  sub: string;
   email: string;
   name: string;
   nickname: string;
@@ -9,7 +9,7 @@ interface IUser extends Document {
 }
 
 const UserSchema: Schema = new Schema({
-  googleId: { type: String, required: true, unique: true },
+  sub: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   name: { type: String, required: true },
   nickname: { type: String, required: true },
