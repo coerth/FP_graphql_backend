@@ -87,9 +87,9 @@ export const CardSchema: Schema = new Schema({
   id: { type: String, required: true, unique: true },
   oracle_id: { type: String, required: true },
   multiverse_ids: { type: [Number], required: true },
-  mtgo_id: { type: Number, required: true },
-  arena_id: { type: Number, required: true },
-  tcgplayer_id: { type: Number, required: true },
+  mtgo_id: { type: Number, required: false },
+  arena_id: { type: Number, required: false },
+  tcgplayer_id: { type: Number, required: false },
   name: { type: String, required: true },
   lang: { type: String, required: true },
   released_at: { type: String, required: true },
@@ -125,7 +125,7 @@ export const CardSchema: Schema = new Schema({
   reprint: { type: Boolean, required: true },
   variation: { type: Boolean, required: true },
   set_id: { type: String, required: true },
-  set_code: { type: String, required: true }, // Renamed from 'set' to 'set_code'
+  set_code: { type: String, required: false }, // Renamed from 'set' to 'set_code'
   set_name: { type: String, required: true },
   set_type: { type: String, required: true },
   set_uri: { type: String, required: true },

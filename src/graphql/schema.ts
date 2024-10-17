@@ -42,8 +42,8 @@ const typeDefs = gql`
   }
 
   type Card {
+    id: ID!
     object: String
-    id: String
     oracle_id: String
     multiverse_ids: [Int]
     mtgo_id: Int
@@ -157,7 +157,7 @@ const typeDefs = gql`
   type Mutation {
     createUser(sub: String!, email: String!, name: String!): User
     createDeck(name: String!, legality: String!, cards: [DeckCardInput!]): Deck
-    addCardToDeck(deckId: ID!, cardId: String!, count: Int!): Deck
+    addCardToDeck(deckId: String!, cardId: String!, count: Int!): Deck
     removeCardFromDeck(deckId: ID!, cardId: String!): Deck
   }
 
