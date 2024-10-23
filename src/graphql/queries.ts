@@ -30,6 +30,9 @@ const queries = {
     }
     return await Deck.find({ user: user._id });
     },
+    deck: async (_: any, { id }: { id: string }) => {
+    return await Deck.findById(id);
+    },
 };
 
 export default queries;
