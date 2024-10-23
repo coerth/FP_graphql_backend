@@ -144,7 +144,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    cards(limit: Int, skip: Int, lang: String): [Card]
+    cards(params: CardSearchParams): [Card]
     card(id: String!): Card
     sets(limit: Int, skip: Int): [Set]
     set(id: ID!): Set
@@ -164,6 +164,15 @@ const typeDefs = gql`
   input DeckCardInput {
     cardId: String!
     count: Int!
+  }
+
+  input CardSearchParams {
+    limit: Int
+    skip: Int
+    lang: String
+    color: String
+    name: String
+    type: String
   }
 `;
 

@@ -4,9 +4,18 @@ import User from '../mongoose/models/User';
 import Deck from '../mongoose/models/Deck';
 
 const queries = {
-  cards: async (_: any, { limit = 50, skip = 0, lang }: { limit?: number; skip?: number; lang?: string }) => {
-    const query = lang ? { lang } : {};
-    return await Card.find(query).limit(limit).skip(skip);
+  cards: async (_: any, { params }: { params: any }) => {
+    const { limit, skip, lang, color, name, type } = params || {};
+    const filter: any = {};
+    if (lang) filter.lang = lang;
+    if (color) filter.color_identity = { $in: color.split(',') };
+    if (name) filter.name = new RegExp(name, 'i'); // Case-insensitive search
+    if (type) filter.type_line = new RegExp(type, 'i'); // Case-insensitive search
+
+    const cards = await Card.find(filter)
+      .limit(limit || 0)
+      .skip(skip || 0);
+    return cards;
   },
   card: async (_: any, { id }: { id: string }) => {
     return await Card.findById(id);
