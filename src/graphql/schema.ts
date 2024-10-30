@@ -141,7 +141,24 @@ const typeDefs = gql`
     name: String!
     legality: String!
     cards: [DeckCard!]!
+    deckStats: DeckStats!
   }
+
+  scalar JSON
+
+  type DeckStats {
+    totalCards: Int!
+    totalUniqueCards: Int!
+    totalLands: Int!
+    totalCreatures: Int!
+    totalPlaneswalkers: Int!
+    totalArtifacts: Int!
+    totalEnchantments: Int!
+    totalInstants: Int!
+    totalSorceries: Int!
+    totalManaSymbols: JSON
+  }
+  
 
   type Query {
     cards(params: CardSearchParams): [Card]
@@ -158,7 +175,7 @@ const typeDefs = gql`
     createUser(sub: String!, email: String!, name: String!): User
     createDeck(name: String!, legality: String!, cards: [DeckCardInput!]): Deck
     addCardToDeck(deckId: String!, cardId: String!, count: Int!): Deck
-    removeCardFromDeck(deckId: ID!, cardId: String!): Deck
+    removeCardFromDeck(deckId: ID!, cardId: String!, count: Int!): Deck
   }
 
   input DeckCardInput {

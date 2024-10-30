@@ -109,7 +109,7 @@ export const CardSchema: Schema = new Schema({
   mana_cost: { type: String, required: false },
   cmc: { type: Number, required: true },
   type_line: { type: String, required: true },
-  oracle_text: { type: String, required: true },
+  oracle_text: { type: String, required: false },
   colors: { type: [String], required: false },
   color_identity: { type: [String], required: true },
   keywords: { type: [String], required: false },
