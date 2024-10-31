@@ -6,7 +6,7 @@ import resolvers from './graphql/resolvers';
 import connectDB from './mongoose/db';
 import cors from 'cors';
 import conditionalAuth from './middleware/conditionalAuth';
-import GraphQLJSON from 'graphql-type-json';
+
 
 const startServer = async () => {
   const app: Application = express();
@@ -17,7 +17,6 @@ const startServer = async () => {
 
   // Create a new ApolloServer instance
   const server = new ApolloServer({
-    JSON: GraphQLJSON,
     typeDefs,
     resolvers,
   });
