@@ -70,6 +70,10 @@ const deckMutations = {
         else if (type === 'Sorcery') deck.deckStats.totalSorceries += count;
       });
 
+      if (card.cmc == 1) deck.deckStats.oneDrops += count;
+      else if (card.cmc == 2) deck.deckStats.twoDrops += count;
+      else deck.deckStats.threePlusDrops += count;
+
       if (card.color_identity.length === 0) {
         // Handle colorless cards (artifacts)
         deck.deckStats.totalManaSymbols.set("C", (deck.deckStats.totalManaSymbols.get("C") || 0) + count);
@@ -136,6 +140,10 @@ const deckMutations = {
         else if (type === 'Instant') deck.deckStats.totalInstants -= count;
         else if (type === 'Sorcery') deck.deckStats.totalSorceries -= count;
       });
+
+      if (existingCard.card.cmc == 1) deck.deckStats.oneDrops -= count;
+      else if (existingCard.card.cmc == 2) deck.deckStats.twoDrops -= count;
+      else deck.deckStats.threePlusDrops -= count;
 
       if (existingCard.card.color_identity.length === 0) {
         // Handle colorless cards (artifacts)

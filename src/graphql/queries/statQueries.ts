@@ -17,7 +17,7 @@ const statQueries = {
         throw new Error('Deck not found');
       }
 
-      const { totalCards, totalLands, totalCreatures, totalPlaneswalkers, totalArtifacts, totalEnchantments, totalInstants, totalSorceries } = deck.deckStats;
+      const { totalCards, totalLands, totalCreatures, totalPlaneswalkers, totalArtifacts, totalEnchantments, totalInstants, totalSorceries, oneDrops, twoDrops, threePlusDrops } = deck.deckStats;
 
       const calculateProbability = (totalType: number) => {
         if (drawCount > totalCards || totalType <= 0) {
@@ -42,6 +42,9 @@ const statQueries = {
         totalEnchantments: calculateProbability(totalEnchantments),
         totalInstants: calculateProbability(totalInstants),
         totalSorceries: calculateProbability(totalSorceries),
+        oneDrops: calculateProbability(oneDrops),
+        twoDrops: calculateProbability(twoDrops),
+        threePlusDrops: calculateProbability(threePlusDrops),
       };
     } catch (error) {
       console.error("Error in drawProbabilities:", error);

@@ -157,6 +157,9 @@ const typeDefs = gql`
     totalInstants: Int!
     totalSorceries: Int!
     totalManaSymbols: JSON
+    oneDrops: Int!
+    twoDrops: Int!
+    threePlusDrops: Int!
   }
 
   type DrawProbabilities {
@@ -169,6 +172,9 @@ const typeDefs = gql`
     totalEnchantments: Float!
     totalInstants: Float!
     totalSorceries: Float!
+    oneDrops: Float!
+    twoDrops: Float!
+    threePlusDrops: Float!
   }
   
 

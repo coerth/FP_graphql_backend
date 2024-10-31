@@ -19,6 +19,9 @@ interface IDeckStats {
   totalManaSymbols: {
     [key: string]: number;
   };
+  oneDrops: number;
+  twoDrops: number;
+  threePlusDrops: number;
 }
 
 interface IDeck extends Document {
@@ -57,6 +60,9 @@ const DeckStatsSchema: Schema = new Schema({
       C: 0,
     },
   },
+  oneDrops: { type: Number, default: 0 },
+  twoDrops: { type: Number, default: 0 },
+  threePlusDrops: { type: Number, default: 0 },
 });
 
 const DeckSchema: Schema = new Schema({
