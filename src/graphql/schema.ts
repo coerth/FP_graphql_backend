@@ -158,6 +158,18 @@ const typeDefs = gql`
     totalSorceries: Int!
     totalManaSymbols: JSON
   }
+
+  type DrawProbabilities {
+    totalCards: Int!
+    totalUniqueCards: Int!
+    totalLands: Float!
+    totalCreatures: Float!
+    totalPlaneswalkers: Float!
+    totalArtifacts: Float!
+    totalEnchantments: Float!
+    totalInstants: Float!
+    totalSorceries: Float!
+  }
   
 
   type Query {
@@ -169,6 +181,7 @@ const typeDefs = gql`
     decks(limit: Int, skip: Int): [Deck]
     decksByUser: [Deck]
     deck(id: ID!): Deck
+    drawProbabilities(deckId: ID!, drawCount: Int!): DrawProbabilities!
   }
 
   type Mutation {
