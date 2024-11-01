@@ -165,7 +165,7 @@ const typeDefs = gql`
   type DrawProbabilities {
     totalCards: Int!
     totalUniqueCards: Int!
-    totalLands: Float!
+    totalLands: LandDrawProbabilities!
     totalCreatures: Float!
     totalPlaneswalkers: Float!
     totalArtifacts: Float!
@@ -175,6 +175,12 @@ const typeDefs = gql`
     oneDrops: Float!
     twoDrops: Float!
     threePlusDrops: Float!
+  }
+
+  type LandDrawProbabilities {
+  one: Float!
+  two: Float!
+  three: Float!
   }
   
 
