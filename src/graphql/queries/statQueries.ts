@@ -3,6 +3,9 @@ import { combinations } from 'mathjs';
 
 function hypergeometric(drawCount: number, typeCount: number, nonTypeCount: number, successCount: number) {
   const totalPopulation = typeCount + nonTypeCount;
+  if (successCount > typeCount || drawCount - successCount > nonTypeCount) {
+    return 0;
+  }
   return (
     (combinations(typeCount, successCount) * combinations(nonTypeCount, drawCount - successCount)) /
     combinations(totalPopulation, drawCount)
