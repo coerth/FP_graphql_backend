@@ -12,6 +12,20 @@ function hypergeometric(drawCount: number, typeCount: number, nonTypeCount: numb
   );
 }
 
+function drawCards(deck: any, drawCount: number) {
+  const drawnCards = [];
+  const deckCards = [...deck.cards];
+
+  for (let i = 0; i < drawCount; i++) {
+    if (deckCards.length === 0) break;
+    const randomIndex = Math.floor(Math.random() * deckCards.length);
+    const [drawnCard] = deckCards.splice(randomIndex, 1);
+    drawnCards.push(drawnCard);
+  }
+
+  return drawnCards;
+}
+
 const statQueries = {
   drawProbabilities: async (_: any, { deckId, drawCount }: { deckId: string; drawCount: number }) => {
     try {
@@ -50,6 +64,25 @@ const statQueries = {
       };
     } catch (error) {
       console.error("Error in drawProbabilities:", error);
+      throw error;
+    }
+  },
+
+  simulateStarterHand: async (_: any, { deckId, drawCount = 7 }: { deckId: string; drawCount: number }) => {
+    try {
+      const deck = await Deck.findById(deckId);
+      if (!deck) {
+        throw new Error('Deck not found');
+      }
+
+      const drawnCards = drawCards(deck, drawCount);
+
+      return drawnCards.map(drawnCard => ({
+        card: drawnCard.card,
+        count: drawnCard.count,
+      }));
+    } catch (error) {
+      console.error("Error in simulateStarterHand:", error);
       throw error;
     }
   }

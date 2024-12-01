@@ -33,7 +33,25 @@ export interface ICard extends Document {
   keywords: string[];
   produced_mana: string[];
   legalities: {
-    [key: string]: string;
+    standard: string;
+      future: string;
+      historic: string;
+      gladiator: string;
+      pioneer: string;
+      explorer: string;
+      modern: string;
+      legacy: string;
+      pauper: string;
+      vintage: string;
+      penny:  string;
+      commander: string;
+      brawl: string;
+      historicbrawl: string;
+      alchemy: string;
+      paupercommander: string;
+      duel: string;
+      oldschool: string;
+      premodern: string;
   };
   games: string[];
   reserved: boolean;
@@ -114,7 +132,30 @@ export const CardSchema: Schema = new Schema({
   color_identity: { type: [String], required: true },
   keywords: { type: [String], required: false },
   produced_mana: { type: [String], required: true },
-  legalities: { type: Map, of: String, required: true },
+  legalities: {
+    standard: { type: String, required: true },
+    future: { type: String, required: true },
+    historic: { type: String, required: true },
+    timeless: { type: String, required: true },
+    gladiator: { type: String, required: true },
+    pioneer: { type: String, required: true },
+    explorer: { type: String, required: true },
+    modern: { type: String, required: true },
+    legacy: { type: String, required: true },
+    pauper: { type: String, required: true },
+    vintage: { type: String, required: true },
+    penny: { type: String, required: true },
+    commander: { type: String, required: true },
+    oathbreaker: { type: String, required: true },
+    standardbrawl: { type: String, required: true },
+    brawl: { type: String, required: true },
+    alchemy: { type: String, required: true },
+    paupercommander: { type: String, required: true },
+    duel: { type: String, required: true },
+    oldschool: { type: String, required: true },
+    premodern: { type: String, required: true },
+    predh: { type: String, required: true },
+  },
   games: { type: [String], required: true },
   reserved: { type: Boolean, required: true },
   foil: { type: Boolean, required: true },

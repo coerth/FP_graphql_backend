@@ -21,7 +21,6 @@ const conditionalAuth = async (req: Request, res: Response, next: NextFunction) 
     // Apply the JWT check middleware if the Authorization header is present
     jwtCheck(req, res, async (err) => {
       if (err) {
-        console.error("Error verifying token:", err);
         return res.status(401).send("Unauthorized");
       }
 
@@ -33,16 +32,20 @@ const conditionalAuth = async (req: Request, res: Response, next: NextFunction) 
       }
 
       // Fetch or create the user
-      let user = await User.findOne({ sub });
+      let user = await User.findOne({ sub: sub });
       if (!user) {
         user = new User({
-          sub,
+          sub: sub,
           email: decodedToken.payload.email || " ",
           name: decodedToken.payload.name || " ",
           nickname: decodedToken.payload.nickname || " ",
           timestamp: new Date().toISOString(),
         });
-        await user.save();
+        try {
+          await user.save();
+        } catch (saveError) {
+          return res.status(500).send("Internal Server Error");
+        }
       }
 
       // Attach the user to the request object
@@ -51,8 +54,7 @@ const conditionalAuth = async (req: Request, res: Response, next: NextFunction) 
       next();
     });
   } else {
-    // console.log("No Authorization header found, skipping JWT check middleware");
-    // If no Authorization header, skip the JWT check middleware
+
     next();
   }
 };

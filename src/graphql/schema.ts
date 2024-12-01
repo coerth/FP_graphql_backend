@@ -66,7 +66,7 @@ const typeDefs = gql`
     color_identity: [String]
     keywords: [String]
     produced_mana: [String]
-    legalities: Legalities
+    legalities: Legalities!
     games: [String]
     reserved: Boolean
     foil: Boolean
@@ -194,6 +194,7 @@ const typeDefs = gql`
     decksByUser: [Deck]
     deck(id: ID!): Deck
     drawProbabilities(deckId: ID!, drawCount: Int!): DrawProbabilities!
+    simulateStarterHand(deckId: ID!, drawCount: Int): [DeckCard]
   }
 
   type Mutation {
@@ -215,6 +216,7 @@ const typeDefs = gql`
     color: String
     name: String
     type: String
+    legalities: JSON
   }
 `;
 

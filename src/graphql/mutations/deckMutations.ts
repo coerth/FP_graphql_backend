@@ -14,7 +14,7 @@ const deckMutations = {
     }
 
     const deck = new Deck({
-      user: user._id,
+      user: { _id: user._id, sub: user.sub },
       name,
       legality,
       cards,
