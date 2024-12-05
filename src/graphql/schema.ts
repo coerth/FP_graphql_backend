@@ -202,6 +202,7 @@ const typeDefs = gql`
     createDeck(name: String!, legality: String!, cards: [DeckCardInput!]): Deck
     addCardToDeck(deckId: String!, cardId: String!, count: Int!): Deck
     removeCardFromDeck(deckId: ID!, cardId: String!, count: Int!): Deck
+    updateUser(name: String!, nickname: String!): User
   }
 
   input DeckCardInput {

@@ -1,4 +1,5 @@
 import User from '../../mongoose/models/User';
+import { Request } from 'express';
 
 const userMutations = {
   createUser: async (_: any, { sub, email, name }: { sub: string; email: string; name: string }) => {
@@ -13,6 +14,17 @@ const userMutations = {
       });
       await user.save();
     }
+    return user;
+  },
+  updateUser: async (_: any, { name, nickname }: { name: string; nickname: string }, { req }: { req: Request }) => {
+    const id = req.user?._id;
+
+    if (!id) {
+      throw new Error('Unauthorized');
+    }
+
+    const user = await User
+      .findByIdAndUpdate(id, { name, nickname }, { new: true });
     return user;
   },
 };
