@@ -189,7 +189,7 @@ const typeDefs = gql`
     card(id: String!): Card
     sets(limit: Int, skip: Int): [Set]
     set(id: ID!): Set
-    user(email: String!): User
+    user: User
     decks(limit: Int, skip: Int): [Deck]
     decksByUser: [Deck]
     deck(id: ID!): Deck
