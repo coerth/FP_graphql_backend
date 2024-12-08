@@ -14,7 +14,7 @@ const deckMutations = {
     }
 
     const deck = new Deck({
-      user: { _id: user._id, sub: user.sub },
+      userId: user._id,
       name,
       legality,
       cards,
@@ -40,7 +40,7 @@ const deckMutations = {
         throw new Error('Deck not found');
       }
 
-      if (deck.user.toString() !== user._id.toString()) {
+      if (deck.userId.toString() !== user._id.toString()) {
         throw new Error('Unauthorized');
       }
 
@@ -108,7 +108,7 @@ const deckMutations = {
         throw new Error('Deck not found');
       }
 
-      if (deck.user.toString() !== user._id.toString()) {
+      if (deck.userId.toString() !== user._id.toString()) {
         throw new Error('Unauthorized');
       }
 

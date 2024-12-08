@@ -9,7 +9,7 @@ const deckQueries = {
     if (!user) {
       throw new Error('Unauthorized');
     }
-    return await Deck.find({ user: user._id });
+    return await Deck.find({ userId: user._id });
   },
   deck: async (_: any, { id }: { id: string }) => {
     return await Deck.findById(id);

@@ -108,11 +108,11 @@ const typeDefs = gql`
     set: String!
     set_name: String!
     set_type: String!
-    released_at: String!
+    released_at: String
     block_code: String
     block: String
     parent_set_code: String
-    card_count: Int!
+    card_count: Int
     digital: Boolean!
     foil_only: Boolean!
     scryfall_set_uri: String!
@@ -137,7 +137,7 @@ const typeDefs = gql`
 
   type Deck {
     id: ID!
-    user: User!
+    userId: String!
     name: String!
     legality: String!
     cards: [DeckCard!]!
@@ -218,6 +218,7 @@ const typeDefs = gql`
     name: String
     type: String
     legalities: JSON
+    setId: String
   }
 `;
 

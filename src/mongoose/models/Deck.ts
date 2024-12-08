@@ -25,7 +25,7 @@ interface IDeckStats {
 }
 
 interface IDeck extends Document {
-  user: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
   name: string;
   legality: string;
   cards: IDeckCard[];
@@ -66,7 +66,7 @@ const DeckStatsSchema: Schema = new Schema({
 });
 
 const DeckSchema: Schema = new Schema({
-  user: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
+  userId: { type: mongoose.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
   legality: { type: String, required: true },
   cards: [DeckCardSchema],

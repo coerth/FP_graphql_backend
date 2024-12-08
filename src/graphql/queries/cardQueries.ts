@@ -1,8 +1,9 @@
+import { set } from 'mongoose';
 import Card from '../../mongoose/models/Card';
 
 const cardQueries = {
   cards: async (_: any, { params }: { params: any }) => {
-    const { limit, skip, lang, color, name, type, legalities } = params || {};
+    const { limit, skip, lang, color, name, type, legalities, setId } = params || {};
     const filter: any = {};
     if (lang) filter.lang = lang;
     if (color) filter.color_identity = { $in: color.split(',') };
@@ -15,6 +16,7 @@ const cardQueries = {
         }
       });
     }
+    if (setId) filter.set_id = setId;
 
     const cards = await Card.find(filter)
       .limit(limit || 0)
