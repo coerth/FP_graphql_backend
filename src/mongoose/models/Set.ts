@@ -32,7 +32,7 @@ const SetSchema: Schema = new Schema({
   foil_only: { type: Boolean, required: true },
   scryfall_set_uri: { type: String, required: true },
   set_uri: { type: String, required: true },
-  icon_svg_uri: { type: String, required: true },
+  icon_svg_uri: { type: String, required: false },
   set_search_uri: { type: String, required: true },
 });
 

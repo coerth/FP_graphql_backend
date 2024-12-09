@@ -117,7 +117,7 @@ const typeDefs = gql`
     foil_only: Boolean!
     scryfall_set_uri: String!
     set_uri: String!
-    icon_svg_uri: String!
+    icon_svg_uri: String
     set_search_uri: String!
   }
 
