@@ -34,8 +34,8 @@ interface IDeck extends Document {
 }
 
 const DeckCardSchema: Schema = new Schema({
-  card: { type: CardSchema, required: false },
-  count: { type: Number, required: false },
+  card: { type: CardSchema, required: true },
+  count: { type: Number, required: true },
 });
 
 const DeckStatsSchema: Schema = new Schema({
@@ -73,6 +73,8 @@ const DeckSchema: Schema = new Schema({
   deckStats: { type: DeckStatsSchema, default: () => ({}) },
   timestamp: { type: Date, required: true, default: Date.now },
 });
+
+DeckSchema.index({ userId: 1, _id: 1, 'cards.card.id': 1 }, { unique: true });
 
 const Deck: Model<IDeck> = mongoose.model<IDeck>('Deck', DeckSchema);
 

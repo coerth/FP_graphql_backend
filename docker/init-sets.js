@@ -6,10 +6,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let MONGODB_URI= "mongodb://user:password@localhost:27017/mtgdb?authSource=admin"
+let MONGODB_URI= process.env.MONGODB_URI || '';
 
 // MongoDB connection URI
-const uri = MONGODB_URI;
+const uri = MONGODB_URI
 
 // Database and collection names
 const dbName = 'mtgdb';

@@ -1,18 +1,13 @@
 import { MongoClient } from 'mongodb';
 import fs from 'fs';
 import path from 'path';
-import JSONStream from 'JSONStream';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-let MONGODB_URI= "mongodb://user:password@localhost:27017/mtgdb?authSource=admin"
-
 // MongoDB connection URI
-const uri = MONGODB_URI;
-
-// Database and collection names
+const uri = process.env.MONGODB_URI || '';
 const dbName = 'mtgdb';
 const cardsCollectionName = 'cards';
 
@@ -21,13 +16,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filePath = path.join(__dirname, '.', 'data', 'default-cards.json');
 
-// Function to process each card and insert it into the cards collection
 async function processCard(card, cardsCollection) {
-    await cardsCollection.insertOne(card);
+    try {
+        if (card.id) {
+            await cardsCollection.updateOne(
+                { id: card.id }, 
+                { $set: card },
+                { upsert: true }
+            );
+        } else {
+            console.warn('Card skipped due to missing card_id:', card);
+        }
+    } catch (error) {
+        console.error('Error processing card:', error);
+    }
 }
 
 async function main() {
-    const client = new MongoClient(uri);
+    const client = new MongoClient(uri, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        socketTimeoutMS: 9999999, // Optional: increases socket timeout
+        connectTimeoutMS: 9999999, // Optional: increases connection timeout
+    });
 
     try {
         // Connect to MongoDB
@@ -38,34 +49,21 @@ async function main() {
         const db = client.db(dbName);
         const cardsCollection = db.collection(cardsCollectionName);
 
-        // Create a read stream and JSON parser
-        const fileStream = fs.createReadStream(filePath);
-        const jsonStream = JSONStream.parse('*');
+        // Read and parse the entire JSON file
+        const fileData = fs.readFileSync(filePath, 'utf8');
+        const cards = JSON.parse(fileData); // Parse the entire JSON content
 
-        fileStream.pipe(jsonStream);
+        // Process each card
+        for (const card of cards) {
+            await processCard(card, cardsCollection);
+        }
 
-        jsonStream.on('data', async (card) => {
-            try {
-                await processCard(card, cardsCollection);
-            } catch (error) {
-                console.error('Error processing card:', error);
-            }
-        });
-
-        jsonStream.on('end', () => {
-            console.log('Data inserted successfully');
-            client.close();
-        });
-
-        jsonStream.on('error', (error) => {
-            console.error('Error reading JSON stream:', error);
-            client.close();
-        });
-
+        console.log('Data inserted successfully');
     } catch (error) {
         console.error('Error inserting data:', error);
-        await client.close();
-    } 
+    } finally {
+        await client.close(); // Ensure client is closed at the end
+    }
 }
 
 main().catch(console.error);

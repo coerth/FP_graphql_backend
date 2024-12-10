@@ -25,6 +25,56 @@ const deckMutations = {
     return deck;
   },
 
+  deleteDeck: async (
+    _: any,
+    { deckId }: { deckId: string },
+    context: { req: any }
+  ) => {
+    const user = context.req.user;
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+  
+    const deck = await Deck.findById(deckId);
+    if (!deck) {
+      throw new Error('Deck not found');
+    }
+  
+    if (deck.userId.toString() !== user._id.toString()) {
+      throw new Error('Unauthorized');
+    }
+  
+    await Deck.deleteOne({ _id: deckId });
+    return deck;
+  },
+
+  copyDeck: async (
+    _: any,
+    { deckId }: { deckId: string },
+    context: { req: any }
+  ) => {
+    const user = context.req.user;
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+  
+    const deck = await Deck.findById(deckId);
+    if (!deck) {
+      throw new Error('Deck not found');
+    }
+  
+    const copiedDeck = new Deck({
+      userId: user._id,
+      name: deck.name,
+      legality: deck.legality,
+      cards: deck.cards,
+      deckStats: deck.deckStats,
+      timestamp: new Date().toISOString(),
+    });
+    await copiedDeck.save();
+    return copiedDeck;
+  },
+
   addCardToDeck: async (
     _: any,
     { deckId, cardId, count }: { deckId: string; cardId: string; count: number },
