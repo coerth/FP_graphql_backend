@@ -1,6 +1,7 @@
 import Deck from '../../mongoose/models/Deck';
 import Card from '../../mongoose/models/Card';
 import { ICard } from '../../mongoose/models/Card';
+import mongoose from 'mongoose';
 
 const deckMutations = {
   createDeck: async (
@@ -76,7 +77,7 @@ const deckMutations = {
 
       if (card.color_identity.length === 0) {
         // Handle colorless cards (artifacts)
-        deck.deckStats.totalManaSymbols.set("C", (deck.deckStats.totalManaSymbols.get("C") || 0) + count);
+        deck.deckStats.totalManaSymbols.set("C", (deck.deckStats.totalManaSymbols.get("C") as number || 0) + count);
       } else {
         card.color_identity.forEach(color => {
           const currentCount = deck.deckStats.totalManaSymbols.get(color) || 0;

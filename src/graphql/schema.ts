@@ -104,21 +104,22 @@ const typeDefs = gql`
   }
 
   type Set {
-    set_id: ID!
-    set: String!
-    set_name: String!
+    set_id: String!
+    code: String!
+    name: String!
     set_type: String!
-    released_at: String
-    block_code: String
-    block: String
-    parent_set_code: String
-    card_count: Int
+    released_at: String!
+    card_count: Int!
     digital: Boolean!
     foil_only: Boolean!
-    scryfall_set_uri: String!
-    set_uri: String!
-    icon_svg_uri: String
-    set_search_uri: String!
+    nonfoil_only: Boolean!
+    scryfall_uri: String!
+    uri: String!
+    search_uri: String!
+    icon_svg_uri: String!
+    arena_code: String
+    mtgo_code: String
+    tcgplayer_set_id: Int
   }
 
   type User {

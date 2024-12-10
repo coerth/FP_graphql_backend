@@ -34,8 +34,8 @@ interface IDeck extends Document {
 }
 
 const DeckCardSchema: Schema = new Schema({
-  card: { type: CardSchema, required: true },
-  count: { type: Number, required: true },
+  card: { type: CardSchema, required: false },
+  count: { type: Number, required: false },
 });
 
 const DeckStatsSchema: Schema = new Schema({

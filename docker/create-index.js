@@ -25,6 +25,8 @@ async function main() {
         // Create an index on the set_id field
         await cardsCollection.createIndex({ set_id: 1 });
         console.log('Index created on set_id field');
+        await cardsCollection.createIndex({ name: 1 });
+        console.log('Index created on name field');
     } catch (error) {
         console.error('Error creating index:', error);
     } finally {

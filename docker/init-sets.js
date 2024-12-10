@@ -2,9 +2,14 @@ import { MongoClient } from 'mongodb';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+let MONGODB_URI= "mongodb://user:password@localhost:27017/mtgdb?authSource=admin"
 
 // MongoDB connection URI
-const uri = 'mongodb://user:password@localhost:27017';
+const uri = MONGODB_URI;
 
 // Database and collection names
 const dbName = 'mtgdb';
@@ -13,7 +18,7 @@ const setsCollectionName = 'sets';
 // Path to the JSON file
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, '..', 'data', 'sets.json');
+const filePath = path.join(__dirname, '.', 'data', 'sets.json');
 
 
 async function main() {

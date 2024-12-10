@@ -7,11 +7,15 @@ const MONGODB_URI = process.env.MONGODB_URI || '';
 
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://user:password@localhost:27017/mtgdb?authSource=admin", {
+    await mongoose.connect(MONGODB_URI, {
     });
     console.log('MongoDB connected');
   } catch (err) {
-    console.error(err.message);
+    if (err instanceof Error) {
+      console.error(err.message);
+    } else {
+      console.error(err);
+    }
     process.exit(1);
   }
 };
