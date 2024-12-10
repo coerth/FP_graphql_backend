@@ -75,6 +75,31 @@ const deckMutations = {
     return copiedDeck;
   },
 
+  editDeck: async (
+    _: any,
+    { deckId, name, legality }: { deckId: string; name: string; legality: string },
+    context: { req: any }
+  ) => {
+    const user = context.req.user;
+    if (!user) {
+      throw new Error('Unauthorized');
+    }
+
+    const deck = await Deck.findById(deckId);
+    if (!deck) {
+      throw new Error('Deck not found');
+    }
+
+    if (deck.userId.toString() !== user._id.toString()) {
+      throw new Error('Unauthorized');
+    }
+
+    deck.name = name;
+    deck.legality = legality;
+    await deck.save();
+    return deck;
+  },
+
   addCardToDeck: async (
     _: any,
     { deckId, cardId, count }: { deckId: string; cardId: string; count: number },

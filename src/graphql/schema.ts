@@ -206,6 +206,7 @@ const typeDefs = gql`
     updateUser(name: String!, nickname: String!): User
     deleteDeck(deckId: ID!): Deck
     copyDeck(deckId: ID!): Deck
+    editDeck(deckId: ID!, name: String!, legality: String!): Deck
   }
 
   input DeckCardInput {
