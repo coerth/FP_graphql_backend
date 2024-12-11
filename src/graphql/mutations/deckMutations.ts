@@ -50,7 +50,7 @@ const deckMutations = {
 
   copyDeck: async (
     _: any,
-    { deckId }: { deckId: string },
+    { deckId, newName }: { deckId: string, newName: string },
     context: { req: any }
   ) => {
     const user = context.req.user;
@@ -65,7 +65,7 @@ const deckMutations = {
   
     const copiedDeck = new Deck({
       userId: user._id,
-      name: deck.name,
+      name: newName,
       legality: deck.legality,
       cards: deck.cards,
       deckStats: deck.deckStats,

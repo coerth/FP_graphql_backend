@@ -16,11 +16,11 @@ const conditionalAuth = async (req: Request, res: Response, next: NextFunction) 
   const authHeader = req.headers.authorization;
 
   if (authHeader && authHeader.startsWith("Bearer ")) {
-    // console.log("Authorization header found, applying JWT check middleware");
 
     // Apply the JWT check middleware if the Authorization header is present
     jwtCheck(req, res, async (err) => {
       if (err) {
+        console.error(err);
         return res.status(401).send("Unauthorized");
       }
 
