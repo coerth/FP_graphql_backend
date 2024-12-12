@@ -1,4 +1,5 @@
 import Deck from '../../mongoose/models/Deck';
+import sanitizeHtml from 'sanitize-html';
 
 const deckQueries = {
   decks: async (_: any, { limit = 20, skip = 0 }: { limit?: number; skip?: number }) => {
@@ -12,6 +13,9 @@ const deckQueries = {
     return await Deck.find({ userId: user._id });
   },
   deck: async (_: any, { id }: { id: string }) => {
+
+    id = sanitizeHtml(id);
+
     return await Deck.findById(id);
   },
 };

@@ -1,8 +1,15 @@
 import User from '../../mongoose/models/User';
 import { Request } from 'express';
+import sanitize from 'sanitize-html';
 
 const userMutations = {
   createUser: async (_: any, { sub, email, name }: { sub: string; email: string; name: string }) => {
+
+    // Sanitize user input
+    email = sanitize(email);
+    name = sanitize(name);
+    sub = sanitize(sub);
+
     let user = await User.findOne({ email });
     if (!user) {
       user = new User({
@@ -17,6 +24,10 @@ const userMutations = {
     return user;
   },
   updateUser: async (_: any, { name, nickname }: { name: string; nickname: string }, { req }: { req: Request }) => {
+    
+    name = sanitize(name);
+    nickname = sanitize(nickname);
+    
     const id = req.user?._id;
 
     if (!id) {

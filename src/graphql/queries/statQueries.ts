@@ -1,5 +1,6 @@
 import Deck from "../../mongoose/models/Deck";
 import { combinations } from 'mathjs';
+import sanitizeHtml from 'sanitize-html';
 
 function hypergeometric(drawCount: number, typeCount: number, nonTypeCount: number, successCount: number) {
   const totalPopulation = typeCount + nonTypeCount;
@@ -29,6 +30,9 @@ function drawCards(deck: any, drawCount: number) {
 const statQueries = {
   drawProbabilities: async (_: any, { deckId, drawCount }: { deckId: string; drawCount: number }) => {
     try {
+
+      deckId = sanitizeHtml(deckId);
+
       const deck = await Deck.findById(deckId);
       if (!deck) {
         throw new Error('Deck not found');
@@ -70,6 +74,9 @@ const statQueries = {
 
   simulateStarterHand: async (_: any, { deckId, drawCount = 7 }: { deckId: string; drawCount: number }) => {
     try {
+
+      deckId = sanitizeHtml(deckId);
+
       const deck = await Deck.findById(deckId);
       if (!deck) {
         throw new Error('Deck not found');
