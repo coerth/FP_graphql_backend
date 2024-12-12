@@ -205,7 +205,7 @@ const typeDefs = gql`
     removeCardFromDeck(deckId: ID!, cardId: String!, count: Int!): Deck
     updateUser(name: String!, nickname: String!): User
     deleteDeck(deckId: ID!): Deck
-    copyDeck(deckId: ID!): Deck
+    copyDeck(deckId: ID!, newName: String!): Deck
     editDeck(deckId: ID!, name: String!, legality: String!): Deck
   }
 
