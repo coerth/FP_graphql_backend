@@ -210,7 +210,7 @@ const typeDefs = gql`
   }
 
   input DeckCardInput {
-    cardId: String!
+    name: String!
     count: Int!
   }
 

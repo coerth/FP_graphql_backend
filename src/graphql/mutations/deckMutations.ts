@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 const deckMutations = {
   createDeck: async (
     _: any,
-    { name, legality, cards }: { name: string; legality: string; cards: { card: ICard; count: number }[] },
+    { name, legality, cards }: { name: string; legality: string; cards?: { name: string; count: number }[] },
     context: { req: any }
   ) => {
     const user = context.req.user;
@@ -14,11 +14,82 @@ const deckMutations = {
       throw new Error('Unauthorized');
     }
 
+    let deckCards: { card: ICard, count: number }[] = [];
+    let deckStats = {
+      totalCards: 0,
+      totalUniqueCards: 0,
+      totalLands: 0,
+      totalCreatures: 0,
+      totalPlaneswalkers: 0,
+      totalArtifacts: 0,
+      totalEnchantments: 0,
+      totalInstants: 0,
+      totalSorceries: 0,
+      totalManaSymbols: new Map<string, number>(),
+      oneDrops: 0,
+      twoDrops: 0,
+      threePlusDrops: 0,
+    };
+
+    if (cards && cards.length > 0) {
+      deckCards = await Promise.all(
+        cards.map(async ({ name, count }) => {
+          const card = await Card.findOne({ name }).sort({ [`legalities.${legality}`]: -1 });
+          if (!card) {
+            console.warn(`Card with name ${name} not found`);
+            return null;
+          }
+
+          // Check if the card is legal in the specified format
+          const isLegal = card.legalities[legality as keyof typeof card.legalities] === 'legal';
+          if (!isLegal) {
+            console.warn(`Card with name ${name} is not legal in ${legality}`);
+          }
+
+          // Update deck statistics
+          deckStats.totalCards += count;
+          deckStats.totalUniqueCards += 1;
+          const types = card.type_line.split(' ');
+          types.forEach(type => {
+            if (type === 'Land') deckStats.totalLands += count;
+            else if (type === 'Creature') deckStats.totalCreatures += count;
+            else if (type === 'Planeswalker') deckStats.totalPlaneswalkers += count;
+            else if (type === 'Artifact') deckStats.totalArtifacts += count;
+            else if (type === 'Enchantment') deckStats.totalEnchantments += count;
+            else if (type === 'Instant') deckStats.totalInstants += count;
+            else if (type === 'Sorcery') deckStats.totalSorceries += count;
+          });
+
+          if (card.cmc == 1) deckStats.oneDrops += count;
+          else if (card.cmc == 2) deckStats.twoDrops += count;
+          else deckStats.threePlusDrops += count;
+
+          if (card.color_identity.length === 0) {
+            // Handle colorless cards (artifacts)
+            deckStats.totalManaSymbols.set("C", (deckStats.totalManaSymbols.get("C") as number || 0) + count);
+          } else {
+            card.color_identity.forEach(color => {
+              const currentCount = deckStats.totalManaSymbols.get(color) || 0;
+              deckStats.totalManaSymbols.set(color, currentCount + count);
+            });
+          }
+
+          return { card: card.toObject(), count, isLegal };
+        })
+      );
+
+      // Filter out null values and prioritize legal cards
+      deckCards = deckCards
+        .filter(deckCard => deckCard !== null)
+        .sort((a, b) => (b.isLegal ? 1 : 0) - (a.isLegal ? 1 : 0)) as { card: ICard, count: number, isLegal: boolean }[];
+    }
+
     const deck = new Deck({
       userId: user._id,
       name,
       legality,
-      cards,
+      cards: deckCards.map(({ card, count }) => ({ card, count })),
+      deckStats,
       timestamp: new Date().toISOString(),
     });
     await deck.save();
@@ -50,24 +121,27 @@ const deckMutations = {
 
   copyDeck: async (
     _: any,
-    { deckId, newName }: { deckId: string, newName:string },
+    { deckId, newName }: { deckId: string, newName: string },
     context: { req: any }
   ) => {
     const user = context.req.user;
     if (!user) {
       throw new Error('Unauthorized');
     }
-  
+
     const deck = await Deck.findById(deckId);
     if (!deck) {
       throw new Error('Deck not found');
     }
-  
+
     const copiedDeck = new Deck({
       userId: user._id,
       name: newName,
       legality: deck.legality,
-      cards: deck.cards,
+      cards: deck.cards.map(deckCard => ({
+        card: { ...deckCard.card.toObject(), _id: new mongoose.Types.ObjectId() },
+        count: deckCard.count,
+      })),
       deckStats: deck.deckStats,
       timestamp: new Date().toISOString(),
     });
